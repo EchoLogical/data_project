@@ -26,3 +26,5 @@ SELECT
     'test error msg' AS error_message,
     'Usia Pemilik Polis' AS rule_name;
 
+
+

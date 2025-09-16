@@ -1,0 +1,17 @@
+p_code,p_name,Jenis,usia_min,usia_max,tujuan_perlindungan,preferensi
+AVRSL,Avrist Simple Life,Jiwa Berjangka,18,50,Proteksi Jiwa,Perlindungan Jiwa
+AVRSL,Avrist Simple Life,Jiwa Berjangka,18,50,Proteksi Jiwa,Perlindungan Kecelakaan
+AVRSL,Avrist Simple Life,Jiwa Berjangka,18,50,Proteksi Jiwa,Premi Fleksibel
+AVRSL,Avrist Simple Life,Jiwa Berjangka,18,50,Proteksi Jiwa,Pengembalian Premi
+AVRSS,Avrist Simple Start,Kesehatan,5,50,Proteksi Kesehatan,Klaim Cashless
+AVRSS,Avrist Simple Start,Kesehatan,5,50,Proteksi Kesehatan,Hospital Cash Plan
+AVRSS,Avrist Simple Start,Kesehatan,5,50,Proteksi Kesehatan,Pengembalian Premi
+MLC,MyLife Cover,Jiwa Berjangka,18,66,Proteksi Jiwa,Perlindungan Jiwa
+MLC,MyLife Cover,Jiwa Berjangka,18,66,Proteksi Jiwa,Santunan Kematian
+MLC,MyLife Cover,Jiwa Berjangka,18,66,Proteksi Jiwa,Perlindungan Cacat Tetap Total
+MLC,MyLife Cover,Jiwa Berjangka,18,66,Proteksi Jiwa,Hospital Cash Plan
+DIGILIFE,Avrist Digi-Life,Jiwa Berjangka,0,65,Proteksi Jiwa,Perlindungan Jiwa
+DIGILIFE,Avrist Digi-Life,Jiwa Berjangka,0,65,Proteksi Jiwa,Hospital Cash Plan
+DIGILIFE,Avrist Digi-Life,Jiwa Berjangka,0,65,Proteksi Jiwa,Perlindungan Penyakit Kritis
+TEMATIS,Avrist Tematis,Kesehatan,30,65,Proteksi Kesehatan,Perlindungan Penyakit Kritis
+,,,,,,

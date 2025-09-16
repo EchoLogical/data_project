@@ -36,10 +36,14 @@ GROUP BY
     variable_name
 HAVING COUNT(*) > 1;
 
+select * from ref_trate_detail;
+select * from formulas
+where product_id = 'MLC';
+
 EXEC sp_calculate_premium_fix
      @input_id			=0,
      @product_id		= 'MLC',
-     @plan_id			= 'MLC_PLATINUM_500',
+     @plan_id			= 'MLC_PLATINUM',
      @plan_type			= 'B',	--BASIC  --RIDER
      @plan_option		= '',
      @age				= 0,

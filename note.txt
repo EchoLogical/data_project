@@ -1,2 +1,52 @@
+
 # print ke requirement txt
 pip freeze > requirements.txt
+
+# install dari requirement txt
+pip install -r requirements.txt
+
+# Cara membuat virtual environment di Windows
+
+# 1. Membuat virtual environment
+python -m venv nama_env
+# atau
+python -m venv venv
+
+# 2. Aktivasi virtual environment
+venv\Scripts\activate
+# atau jika nama environment berbeda
+nama_env\Scripts\activate
+
+# 3. Deaktivasi virtual environment
+deactivate
+
+# 4. Hapus virtual environment
+rmdir /s venv
+
+# 5. Check virtual environment aktif
+where python
+# atau
+python --version
+
+# 6. Install package dalam virtual environment
+pip install package_name
+
+# 7. List package dalam virtual environment
+pip list
+
+# 8. Upgrade pip dalam virtual environment
+python -m pip install --upgrade pip
+
+# 9. Create requirements.txt dari virtual environment
+pip freeze > requirements.txt
+
+# 10. Install dari requirements.txt dalam virtual environment
+pip install -r requirements.txt
+
+# Contoh workflow lengkap:
+# python -m venv venv
+# venv\Scripts\activate
+# python -m pip install --upgrade pip
+# pip install -r requirements.txt
+# python main.py
+# deactivate

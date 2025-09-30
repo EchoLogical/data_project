@@ -41,7 +41,7 @@ EXEC sp_role_menu_access
      @modify='1',
      @is_active='1',
      @process_by='DSNP121',
-     `@result=@result out
+     @result=@result out
 SELECT @result AS result
 
 -- view mapping role
@@ -67,5 +67,18 @@ from
     trole_user ru,
      trole_menu rm
 where ru.role_menu_id = rm.id
+
+
+
+-- debug app
+DECLARE @result VARCHAR(500)
+EXEC sp_role_user @action = 'MOD',
+     @user_name = 'DSNP117',
+     @role_menu_id = '1',
+     @is_active = '1',
+     @process_by = 'Aqmarina-A.Ismahyati@avrist.com',
+     @result = @result out
+SELECT @result AS result
+
 
  

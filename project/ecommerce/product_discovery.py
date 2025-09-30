@@ -27,9 +27,6 @@ def get_data_product_discovery(db):
     return processed_data_list
 
 
-
-
-
 @avr_illus_con
 def fetch_data(db):
     product_discovery_raw = get_data_product_discovery()

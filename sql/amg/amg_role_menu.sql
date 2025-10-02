@@ -15,6 +15,7 @@ SELECT *
 FROM trole_menu_access
 
 --SP get menu
+EXEC sp_BuildMenuHierarchy_ByStructure @user_name = 'trah-up.dyah+test@avrist.com'
 EXEC sp_BuildMenuHierarchy_ByStructure
      @user_name = 'DSNP121',
      @menu_id = 1,
@@ -28,6 +29,16 @@ EXEC sp_role_user
      @role_menu_id = '1',
      @is_active='1',
      @process_by='DSNP121',
+     @result=@result out
+SELECT @result AS result
+
+DECLARE @result VARCHAR(500)
+EXEC sp_role_user
+     @action='CRT',
+     @user_name='developer.avrist@avrist.com',
+     @role_menu_id = '1',
+     @is_active='1',
+     @process_by='faisal.amir@avrist.com',
      @result=@result out
 SELECT @result AS result
 
@@ -79,6 +90,20 @@ EXEC sp_role_user @action = 'MOD',
      @process_by = 'Aqmarina-A.Ismahyati@avrist.com',
      @result = @result out
 SELECT @result AS result
+
+
+
+select
+    al.email,
+    tu.*
+from trole_user tu, admin_login al
+where al.username = tu.user_name
+
+UPDATE trole_user
+SET user_name = al.email
+FROM trole_user tu
+JOIN admin_login al ON al.username = tu.user_name
+
 
 
  

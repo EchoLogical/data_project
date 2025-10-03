@@ -42,6 +42,16 @@ EXEC sp_role_user
      @result=@result out
 SELECT @result AS result
 
+DECLARE @result VARCHAR(500)
+EXEC sp_role_user
+     @action='MOD',
+     @user_name='faisal.amir@avrist.com',
+     @role_menu_id = '1',
+     @is_active='1',
+     @process_by='faisal.amir@avrist.com',
+     @result=@result out
+SELECT @result AS result
+
 --SP insert/update/delete role menu access
 DECLARE @result VARCHAR(500)
 EXEC sp_role_menu_access

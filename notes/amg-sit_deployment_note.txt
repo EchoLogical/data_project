@@ -1,0 +1,2 @@
+1. modifikasi view v_ebd_data
+2. penambahan function fn_extractnamefromemail

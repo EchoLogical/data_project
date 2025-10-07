@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Source the environment variables
+echo "locating config file $(pwd)/config.env.sh"
+if [ -f "$(pwd)/config.env.sh" ]; then
+    source "$(pwd)/config.env.sh"
+else
+    echo "Error: config.env.sh file not found"
+    exit 1
+fi
+
+# Function to clean up container and image on failure
+cleanup() {
+    echo "Cleaning up..."
+    if docker inspect $CONTAINER_NAME &> /dev/null; then
+        docker container rm -f $CONTAINER_NAME || echo "Failed to remove container"
+    fi
+    if docker image inspect $IMAGE_NAME &> /dev/null; then
+        docker image rm $IMAGE_NAME || echo "Failed to remove image"
+    fi
+}
+
+# Trap errors to execute cleanup
+trap 'cleanup' ERR
+
+# If IMAGE_FILE_BACKUP_PATH is not set in config.env.sh.sh, prompt for it
+if [ -z "$IMAGE_FILE_BACKUP_PATH" ]; then
+    read -p "Enter backup path for Docker image: " IMAGE_FILE_BACKUP_PATH
+fi
+
+# Ensure the backup path exists
+if [ ! -d "$IMAGE_FILE_BACKUP_PATH" ]; then
+    echo "Creating backup path: $IMAGE_FILE_BACKUP_PATH"
+    mkdir -p "$IMAGE_FILE_BACKUP_PATH" || { echo "Failed to create backup path"; exit 1; }
+fi
+
+# Backup the Docker image
+echo "Backing up Docker image to $IMAGE_FILE_BACKUP_PATH/${IMAGE_FILE_BACKUP_NAME}"
+docker save -o "$IMAGE_FILE_BACKUP_PATH/${IMAGE_FILE_BACKUP_NAME}" "$IMAGE_NAME" || { echo "Failed to backup Docker image"; exit 1; }
+echo "Docker image backup completed successfully"

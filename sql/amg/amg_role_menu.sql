@@ -1,3 +1,6 @@
+select * from admin_login al
+where al.email like '%rachmat%'
+
 -- daftar menunya
 SELECT *
 FROM tmenu
@@ -89,8 +92,6 @@ from
      trole_menu rm
 where ru.role_menu_id = rm.id
 
-
-
 -- debug app
 DECLARE @result VARCHAR(500)
 EXEC sp_role_user @action = 'MOD',
@@ -101,13 +102,12 @@ EXEC sp_role_user @action = 'MOD',
      @result = @result out
 SELECT @result AS result
 
-
-
 select
     al.email,
     tu.*
 from trole_user tu, admin_login al
 where al.username = tu.user_name
+and al.username like '%rachmat%'
 
 UPDATE trole_user
 SET user_name = al.email

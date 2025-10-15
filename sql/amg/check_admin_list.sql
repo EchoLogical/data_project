@@ -60,7 +60,9 @@ delete from ebd_data
 where member_id = 'dsnp124';
 
 select * from admin_login
-where email = 'faisal.amir@avrist.com';
+where email = 'aqmarina-a.ismahyati+HR@avrist.com';
+
+
 
 
 

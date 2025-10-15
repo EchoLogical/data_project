@@ -1,5 +1,11 @@
 select distinct role from admin_login;
 
+select * from admin_login
+where email like '%rief%'
+
+select * from ebd_data
+where email like '%rief%'
+
 
 select * from admin_login al
 where al.role in (

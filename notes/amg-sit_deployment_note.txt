@@ -1,2 +1,5 @@
 1. modifikasi view v_ebd_data
 2. penambahan function fn_extractnamefromemail
+3. penampahan sp_validate_register_ebd
+4. penambahan sp_get_member_data
+5. penambahan sp_validate_update_ebd

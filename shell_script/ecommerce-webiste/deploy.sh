@@ -1,101 +1,57 @@
 #!/bin/bash
+set -e  # stop kalau ada error
 
-set -e  # Exit immediately if any command returns non-zero status
-
-# Configuration variables
-IMAGE_NAME="website"
 SERVICE_NAME="ecommerce_website"
-BACKUP_DIR="/home/avrist/repo/website/backup"
-IMAGE_DIR="/home/avrist/repo/website/image"
+IMAGE_NAME="website"
 STACK_NAME="ecommerce"
+IMAGE_PATH="/home/avrist/repo/website/image/website.tar"
 COMPOSE_FILE="/home/avrist/repo/website/development.yml"
 
-# Function to log messages
-log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
+echo "========================================"
+echo "🚀 Starting redeploy for $SERVICE_NAME"
+echo "========================================"
 
-# Function to request confirmation
-confirm_action() {
-    read -p "$1 (y/n): " confirm
-    if [[ "$confirm" != "y" ]]; then
-        log "Action cancelled."
-        exit 0
-    fi
-}
-
-# Function to check if directory exists, create if not
-ensure_directory() {
-    if [ ! -d "$1" ]; then
-        log "Creating directory: $1"
-        sudo mkdir -p "$1"
-    fi
-}
-
-# Ensure backup directory exists
-ensure_directory "$BACKUP_DIR"
-
-# Backup old image
-log "Backing up old image..."
-BACKUP_FILE="$BACKUP_DIR/ecommerce-website_autobak_$(date '+%Y%m%d_%H%M%S').tar"
-if sudo docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
-    sudo docker save "$IMAGE_NAME" -o "$BACKUP_FILE"
-    log "✓ Backup saved to: $BACKUP_FILE"
-else
-    log "⚠ Image not found, skipping backup."
-fi
-
-# Remove existing service
-log "Removing existing service..."
+# Step 1: Remove existing service
 if sudo docker service ls | grep -q "$SERVICE_NAME"; then
-    sudo docker service rm "$SERVICE_NAME"
-    log "✓ Service removed successfully."
+  echo "🧹 Removing old service: $SERVICE_NAME ..."
+  sudo docker service rm "$SERVICE_NAME"
 else
-    log "⚠ Service not found or already removed."
+  echo "ℹ️ Service $SERVICE_NAME not found, skipping removal."
 fi
 
-# Remove old image
-log "Removing old image..."
-if sudo docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
-    sudo docker rmi "$IMAGE_NAME"
-    log "✓ Image removed successfully."
+# Step 2: Remove old image (if exists)
+if sudo docker images | grep -q "$IMAGE_NAME"; then
+  echo "🗑️  Removing old image: $IMAGE_NAME ..."
+  sudo docker rmi -f "$IMAGE_NAME" || true
 else
-    log "⚠ Image not found or already removed."
+  echo "ℹ️ No existing image named $IMAGE_NAME found."
 fi
 
-# Load new image
-confirm_action "Do you want to load the new image?"
-log "Loading new image..."
-IMAGE_TAR="$IMAGE_DIR/$IMAGE_NAME.tar"
-if [ -f "$IMAGE_TAR" ]; then
-    sudo docker load -i "$IMAGE_TAR"
-    log "✓ New image loaded successfully."
+# Step 3: Load new image from tar
+if [ -f "$IMAGE_PATH" ]; then
+  echo "📦 Loading image from: $IMAGE_PATH ..."
+  sudo docker load < "$IMAGE_PATH"
 else
-    log "✗ Error: Image file not found at $IMAGE_TAR"
-    exit 1
+  echo "❌ ERROR: Image file not found at $IMAGE_PATH"
+  exit 1
 fi
 
-# Deploy stack
-log "Deploying new stack..."
+# Step 4: Deploy stack
 if [ -f "$COMPOSE_FILE" ]; then
-    sudo docker stack deploy -c "$COMPOSE_FILE" "$STACK_NAME"
-    log "✓ Stack deployed successfully."
+  echo "🚢 Deploying stack: $STACK_NAME using $COMPOSE_FILE ..."
+  sudo docker stack deploy -c "$COMPOSE_FILE" "$STACK_NAME"
 else
-    log "✗ Error: Compose file not found at $COMPOSE_FILE"
-    exit 1
+  echo "❌ ERROR: Compose file not found at $COMPOSE_FILE"
+  exit 1
 fi
 
-# Wait for service to be ready
-log "Waiting for service to be ready..."
-sleep 5
+# Step 5: Verify deployment
+echo "🔍 Checking service status..."
+sudo docker service ps "$SERVICE_NAME" || true
 
-# Verify deployment
-log "Verifying deployment..."
-if sudo docker service ls | grep -q "$SERVICE_NAME"; then
-    REPLICAS=$(sudo docker service ls --filter name="$SERVICE_NAME" --format "{{.Replicas}}")
-    log "✓ Service status: $REPLICAS"
-else
-    log "⚠ Warning: Service not found in service list"
-fi
+# Step 6: Verify running container
+echo "🐳 Checking running container..."
+sudo docker ps | grep "$IMAGE_NAME" || echo "⚠️ No running container found for $IMAGE_NAME"
 
-log "=== Deployment completed successfully ==="
+echo "✅ Redeploy completed successfully!"
+echo "========================================"

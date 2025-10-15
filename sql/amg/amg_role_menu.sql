@@ -12,6 +12,7 @@ FROM trole_menu
 -- mapping user dengan role di trole_menu
 SELECT *
 FROM trole_user
+where user_name like '%aqma%'
 
 -- permissing mapping dengan trole_menu
 SELECT *
@@ -37,7 +38,7 @@ SELECT @result AS result
 
 DECLARE @result VARCHAR(500)
 EXEC sp_role_user
-     @action='CRT',
+     @action='MOD',
      @user_name='developer.avrist@avrist.com',
      @role_menu_id = '1',
      @is_active='1',
@@ -107,7 +108,7 @@ select
     tu.*
 from trole_user tu, admin_login al
 where al.username = tu.user_name
-and al.username like '%rachmat%'
+and al.username like '%aqma%'
 
 UPDATE trole_user
 SET user_name = al.email
